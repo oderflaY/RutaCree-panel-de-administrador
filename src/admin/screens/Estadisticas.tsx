@@ -189,7 +189,7 @@ function Legend({ items }: { items: [string, string][] }) {
 
 function Tip({ x, y, children }: { x: number; y: number; children: ReactNode }) {
   return (
-    <div className="pointer-events-none absolute z-10 -translate-x-1/2 -translate-y-full whitespace-nowrap rounded-lg bg-slate-700 px-2.5 py-1.5 text-xs text-white shadow-lg"
+    <div className="pointer-events-none absolute z-10 -translate-x-1/2 -translate-y-full whitespace-nowrap tip rounded-lg px-2.5 py-1.5 text-xs shadow-lg"
       style={{ left: x, top: y - 8 }}>{children}</div>
   )
 }
@@ -316,7 +316,7 @@ function Columns({ data, stacked = false }: { data: { label: string; a: number; 
         const d = data[hover]
         const xPct = ((L + band * hover + band / 2) / W) * 100
         return (
-          <div className="pointer-events-none absolute z-10 -translate-x-1/2 whitespace-nowrap rounded-lg bg-slate-700 px-2.5 py-1.5 text-xs text-white shadow-lg"
+          <div className="pointer-events-none absolute z-10 -translate-x-1/2 whitespace-nowrap tip rounded-lg px-2.5 py-1.5 text-xs shadow-lg"
             style={{ left: `${xPct}%`, top: 0 }}>
             <strong>{d.label}</strong> · {fmt(tot(d))} usuarios
             {stacked && <><br />Hombres {fmt(d.a)} · Mujeres {fmt(d.b ?? 0)}</>}

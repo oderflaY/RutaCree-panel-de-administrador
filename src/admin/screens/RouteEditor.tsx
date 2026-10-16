@@ -758,7 +758,7 @@ export function RouteEditor({ start, existingIds, landmarks, onClose, onSaved }:
               <Stat label="Paradas" value={String(draft.stops.length)} />
             </div>
           )}
-          <div className="pointer-events-none absolute bottom-2 left-1/2 -translate-x-1/2 rounded-full bg-slate-800/70 px-3 py-1 text-[11px] text-white">
+          <div className="pointer-events-none absolute bottom-2 left-1/2 -translate-x-1/2 tip rounded-full px-3 py-1 text-[11px] opacity-90">
             {tool === 'trazar' ? 'Clic: agregar punto · arrastrar: mover · clic derecho: quitar' : tool === 'paradas' ? 'Clic sobre el recorrido: nueva parada · arrastra una parada para moverla' : 'Arrastra puntos y paradas · Supr quita lo seleccionado'}
           </div>
         </div>

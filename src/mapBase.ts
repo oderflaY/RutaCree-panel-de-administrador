@@ -14,6 +14,8 @@ const esri = (name: string) =>
   `https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/${name}/MapServer/tile/{z}/{y}/{x}`
 
 type Layer = { id: string; theme: Theme }
+// Fondo oscuro más profundo y contrastado, para que las rutas DIF resalten como neón suave.
+const DARK_PAINT = { 'raster-brightness-max': 0.78, 'raster-contrast': 0.12, 'raster-saturation': -0.15 }
 const LAYERS: Layer[] = usesMapbox
   ? [{ id: 'base-light', theme: 'light' }, { id: 'base-dark', theme: 'dark' }]
   : [
@@ -33,7 +35,7 @@ export function baseStyle(theme: Theme): maplibregl.StyleSpecification {
       },
       layers: [
         { id: 'base-light', type: 'raster', source: 'light', layout: { visibility: visibility('light') } },
-        { id: 'base-dark', type: 'raster', source: 'dark', layout: { visibility: visibility('dark') } },
+        { id: 'base-dark', type: 'raster', source: 'dark', layout: { visibility: visibility('dark') }, paint: DARK_PAINT },
       ],
     }
   }
@@ -49,8 +51,8 @@ export function baseStyle(theme: Theme): maplibregl.StyleSpecification {
     layers: [
       { id: 'base-light', type: 'raster', source: 'light', layout: { visibility: visibility('light') } },
       { id: 'labels-light', type: 'raster', source: 'lightLabels', layout: { visibility: visibility('light') } },
-      { id: 'base-dark', type: 'raster', source: 'dark', layout: { visibility: visibility('dark') } },
-      { id: 'labels-dark', type: 'raster', source: 'darkLabels', layout: { visibility: visibility('dark') } },
+      { id: 'base-dark', type: 'raster', source: 'dark', layout: { visibility: visibility('dark') }, paint: DARK_PAINT },
+      { id: 'labels-dark', type: 'raster', source: 'darkLabels', layout: { visibility: visibility('dark') }, paint: { 'raster-opacity': 0.85 } },
     ],
   }
 }

@@ -12,36 +12,75 @@
   --blue: #6c8cff;
 }
 
-/* Tema oscuro: mismas piezas neumórficas sobre grafito. La escala slate se invierte y los tonos de
-   acento se ajustan para que las clases de Tailwind de todas las pantallas funcionen sin cambios. */
+/* Tema oscuro «noche DIF»: azul carbón profundo (no gris plano), relieve suave con un filo de luz y un
+   resplandor muy tenue de azul y magenta DIF al fondo. La escala slate se invierte y los acentos se
+   aclaran, así las clases de Tailwind de todas las pantallas funcionan sin cambios. */
 :root[data-theme='dark'] {
   color-scheme: dark;
-  --bg: #252a33;
-  --bg-sunk: #20242c;
-  --dark: #171a20;
-  --light: #323844;
-  --ink: #dde3ea;
-  --ink-soft: #9aa5b4;
+  --bg: #161c27;
+  --bg-sunk: #10151e;
+  --dark: #0a0d13;
+  --light: #222a38;
+  --ink: #e8edf5;
+  --ink-soft: #98a4b8;
+  --edge: rgb(255 255 255 / .045);   /* filo de luz de tarjetas y botones */
 
-  --color-slate-200: #323843;
-  --color-slate-300: #444b57;
-  --color-slate-400: #7f8a9a;
-  --color-slate-500: #9aa5b4;
-  --color-slate-600: #c3cbd6;
-  --color-slate-700: #dde3ea;
+  --color-slate-200: #273041;
+  --color-slate-300: #354157;
+  --color-slate-400: #7e8ba1;
+  --color-slate-500: #98a4b8;
+  --color-slate-600: #c5cddb;
+  --color-slate-700: #e8edf5;
 
-  --color-sky-100: #1b3346;
-  --color-sky-200: #1f4462;
-  --color-sky-600: #4fb8f0;
-  --color-sky-700: #7fcff7;
-  --color-emerald-100: #173a30;
-  --color-emerald-600: #3fd29e;
-  --color-emerald-700: #6ee2b6;
-  --color-amber-100: #3d3119;
-  --color-amber-700: #f5c955;
-  --color-rose-100: #42202a;
-  --color-rose-600: #fb7a8e;
+  --color-sky-100: #172a45;
+  --color-sky-200: #1d3a63;
+  --color-sky-600: #7fa6ee;
+  --color-sky-700: #a7c2f4;
+  --color-emerald-100: #12342d;
+  --color-emerald-500: #2fc596;
+  --color-emerald-600: #43d6a6;
+  --color-emerald-700: #74e4bf;
+  --color-amber-100: #3a2e14;
+  --color-amber-500: #f5b83d;
+  --color-amber-700: #f8cf6a;
+  --color-rose-100: #3d1a26;
+  --color-rose-500: #ff6f86;
+  --color-rose-600: #ff8a9d;
 }
+:root[data-theme='dark'] body {
+  background:
+    radial-gradient(1100px 620px at -5% -10%, rgb(47 93 168 / .16), transparent 60%),
+    radial-gradient(900px 560px at 105% 110%, rgb(217 17 120 / .09), transparent 60%),
+    #121823;
+  background-attachment: fixed;
+}
+:root[data-theme='dark'] .neu-card {
+  box-shadow: 10px 10px 24px var(--dark), -6px -6px 18px rgb(40 50 68 / .35), inset 0 1px 0 var(--edge);
+  border: 1px solid var(--edge);
+}
+:root[data-theme='dark'] .neu-card-sm {
+  box-shadow: 7px 7px 16px var(--dark), -4px -4px 12px rgb(40 50 68 / .3), inset 0 1px 0 var(--edge);
+  border: 1px solid var(--edge);
+}
+:root[data-theme='dark'] .neu-btn {
+  box-shadow: 5px 5px 12px var(--dark), -3px -3px 9px rgb(40 50 68 / .35), inset 0 1px 0 var(--edge);
+}
+:root[data-theme='dark'] .neu-btn:active, :root[data-theme='dark'] .neu-btn[data-on='true'] {
+  box-shadow: inset 4px 4px 9px var(--dark), inset -2px -2px 6px rgb(40 50 68 / .35);
+}
+:root[data-theme='dark'] .neu-btn:disabled { box-shadow: 5px 5px 12px var(--dark), -3px -3px 9px rgb(40 50 68 / .35); }
+:root[data-theme='dark'] .neu-inset {
+  box-shadow: inset 4px 4px 9px var(--dark), inset -2px -2px 6px rgb(40 50 68 / .3);
+  border: 1px solid rgb(255 255 255 / .03);
+}
+:root[data-theme='dark'] ::selection { background: rgb(127 166 238 / .35); }
+:root[data-theme='dark'] { scrollbar-color: #2b3547 transparent; }
+
+/* Etiquetas emergentes y fondo de ventanas: oscuros en los dos temas. */
+.tip { background: #1f2937; color: #fff; }
+:root[data-theme='dark'] .tip { background: #0b1018; border: 1px solid rgb(255 255 255 / .08); }
+.modal-backdrop { background: rgb(71 85 105 / .3); }
+:root[data-theme='dark'] .modal-backdrop { background: rgb(4 7 12 / .62); }
 
 /* ---- Colores DIF Durango ----
    Paleta del logotipo DIF y de la imagen "Ruta Azul" (estilo artesanal). Cada sección del panel toma un
@@ -103,6 +142,10 @@
     radial-gradient(700px 220px at 0% 100%, color-mix(in srgb, var(--accent) 5%, transparent), transparent 70%);
 }
 
+:root[data-theme='dark'] .section-wash {
+  background: radial-gradient(900px 260px at 100% 0%, color-mix(in srgb, var(--accent) 7%, transparent), transparent 70%);
+}
+
 /* Menú: cada opción con su color; la elegida, con barra lateral y texto en su tono. */
 .nav-item { position: relative; }
 .nav-item .nav-chip {
@@ -110,6 +153,8 @@
   color: var(--accent-ink);
   background: color-mix(in srgb, var(--accent) 15%, var(--bg));
 }
+:root[data-theme='dark'] .nav-item .nav-chip { background: color-mix(in srgb, var(--accent) 20%, var(--bg)); }
+:root[data-theme='dark'] .nav-item[data-on='true'] .nav-chip { background: var(--accent); box-shadow: 0 0 14px color-mix(in srgb, var(--accent) 45%, transparent); }
 .nav-item[data-on='true'] { color: var(--accent-ink); }
 .nav-item[data-on='true'] .nav-chip { background: var(--accent); color: var(--chip-on, #fff); }
 /* Iconos sobre los tonos claros (naranja, turquesa, amarillo): oscuros para que se lean. */
@@ -159,7 +204,7 @@ body { background: var(--bg); color: var(--ink); font-synthesis-weight: none; }
 .maplibregl-ctrl-group { border-radius: 12px !important; box-shadow: 5px 5px 10px var(--dark), -5px -5px 10px var(--light) !important; border: none !important; }
 .maplibregl-ctrl-group button { background: var(--bg) !important; }
 [data-theme='dark'] .maplibregl-ctrl-group button .maplibregl-ctrl-icon { filter: invert(1); }
-[data-theme='dark'] .maplibregl-ctrl-attrib { background: rgb(37 42 51 / .8); color: var(--ink-soft); }
+[data-theme='dark'] .maplibregl-ctrl-attrib { background: rgb(16 21 30 / .8); color: var(--ink-soft); }
 [data-theme='dark'] .maplibregl-ctrl-attrib a { color: var(--ink-soft); }
 
 /* Camión en el mapa en vivo: píldora con el número económico, del color de su ruta. */

@@ -103,7 +103,7 @@ export function Modal({ title, onClose, children }: { title: string; onClose: ()
     return () => window.removeEventListener('keydown', h)
   }, [onClose])
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-500/30 p-4 backdrop-blur-sm" onClick={onClose}>
+    <div className="modal-backdrop fixed inset-0 z-50 flex items-center justify-center p-4 backdrop-blur-sm" onClick={onClose}>
       <div className="neu-card w-full max-w-lg p-6" onClick={(e) => e.stopPropagation()}>
         <div className="mb-4 flex items-center justify-between">
           <h3 className="text-lg font-semibold text-slate-700">{title}</h3>

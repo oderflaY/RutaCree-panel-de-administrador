@@ -256,7 +256,7 @@ function FormEditor({ kind, refId }: { kind: FormKind; refId: string }) {
               role="tab"
               aria-selected={i === sheetIdx}
               onClick={() => setSheetIdx(i)}
-              className={`rounded-b-lg border px-3 py-1.5 text-sm ${i === sheetIdx ? 'border-sky-400 bg-white font-semibold text-sky-700' : 'border-slate-300/60 text-slate-600 hover:bg-slate-500/5'}`}
+              className={`rounded-b-lg border px-3 py-1.5 text-sm ${i === sheetIdx ? 'border-sky-400 bg-white font-semibold text-[#9c1866]' : 'border-slate-300/60 text-slate-600 hover:bg-slate-500/5'}`}
             >
               {SHEET_LABEL[s.name] ?? s.name}
               {Object.keys(draft[s.name] ?? {}).length > 0 && ' •'}
