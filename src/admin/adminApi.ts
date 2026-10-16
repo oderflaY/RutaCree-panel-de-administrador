@@ -34,7 +34,8 @@ async function req<T>(method: string, path: string, body?: unknown): Promise<T> 
   if (token) headers.Authorization = `Bearer ${token}`
   let r: Response
   try {
-    r = await fetch(path, { method, headers, body: body === undefined ? undefined : form ? body : JSON.stringify(body) })
+    // no-cache: el panel siempre revalida (con ETag) y ve al instante lo que acaba de publicar.
+    r = await fetch(path, { method, headers, cache: 'no-cache', body: body === undefined ? undefined : form ? body : JSON.stringify(body) })
   } catch {
     throw new ApiError(0, 'red', 'No hay conexión con el servidor.')
   }
@@ -221,6 +222,13 @@ export const adminApi = {
 
   deleteRoute: (id: string) => req<void>('DELETE', `/api/v1/admin/routes/${encodeURIComponent(id)}`),
   putRoute: (geojson: unknown) => req<{ id: string; stops: number }>('PUT', '/api/v1/admin/routes', geojson),
+  // Editor de rutas: camino por las calles entre puntos y nombre de la calle bajo una parada.
+  routePath: (points: [number, number][]) =>
+    req<{ coordinates: [number, number][]; distance: number; duration: number }>('GET',
+      `/api/v1/admin/routing/route?points=${encodeURIComponent(points.map((p) => `${p[0].toFixed(6)},${p[1].toFixed(6)}`).join(';'))}`),
+  streetName: (p: [number, number]) =>
+    req<{ name: string; cross?: string; lon: number; lat: number }>('GET',
+      `/api/v1/admin/routing/street?point=${encodeURIComponent(`${p[0].toFixed(6)},${p[1].toFixed(6)}`)}`),
   rawRoutes: () => req<{ routes: RawRoute[] }>('GET', '/api/v1/routes').then((r) => r.routes),
 }
 

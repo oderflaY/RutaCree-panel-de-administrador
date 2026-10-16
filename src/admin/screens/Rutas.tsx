@@ -8,6 +8,8 @@ import { useTheme } from '../../theme'
 import { adminApi, type RawRoute } from '../adminApi'
 import { errMsg, useToast } from '../ctx'
 import { Badge, Button, Modal, Section } from '../ui'
+import { RouteEditor, type EditorStart } from './RouteEditor'
+import type { LngLat } from '../routeGeo'
 
 type Parsed = {
   id: string
@@ -92,6 +94,27 @@ export function Rutas() {
   const [error, setError] = useState('')
   const [sel, setSel] = useState('')
   const [geojson, setGeojson] = useState<Parsed | null>(null)
+  const [editing, setEditing] = useState<EditorStart | null>(null)
+  const fileRef = useRef<HTMLInputElement>(null)
+
+  // Lugares que se repiten en las rutas (DIF, CREE, CRIT, CAM…), para empezar o poner paradas con un clic.
+  const landmarks = useMemo(() => {
+    const out = new Map<string, LngLat>()
+    for (const r of allRoutes) for (const s of r.stops) {
+      if (/^(DIF|CREE|CRIT|CAM|C\.?R\.?E\.?E)\b/i.test(s.name) && !out.has(s.name)) out.set(s.name, [s.lng, s.lat])
+    }
+    return [...out].map(([name, p]) => ({ name, p }))
+  }, [allRoutes])
+
+  async function importFile(f: File) {
+    try {
+      const raw = JSON.parse(await f.text()) as RawRoute
+      if (raw?.type !== 'FeatureCollection' || !raw.features?.some((x) => x.geometry?.type === 'LineString')) throw new Error('El archivo no es un GeoJSON de ruta (falta el LineString)')
+      setEditing({ kind: 'import', raw })
+    } catch (e) {
+      toast(errMsg(e), 'error')
+    }
+  }
 
   async function load() {
     try {
@@ -138,8 +161,30 @@ export function Rutas() {
 
   if (error) return <p className="text-sm text-rose-500">{error}</p>
 
+  if (editing) {
+    return (
+      <RouteEditor
+        start={editing}
+        existingIds={allRoutes.map((r) => r.id)}
+        landmarks={landmarks}
+        onClose={() => setEditing(null)}
+        onSaved={(id) => { setEditing(null); setSel(id); load() }}
+      />
+    )
+  }
+
   return (
     <div className="flex flex-col gap-4">
+      <div className="neu-card-sm flex flex-wrap items-center gap-3 px-4 py-3">
+        <div className="mr-auto">
+          <div className="text-sm font-semibold text-slate-700">Rutas</div>
+          <div className="text-xs text-slate-500">Traza una ruta en el mapa: sigue las calles sola y se publica a las apps al instante.</div>
+        </div>
+        <Button onClick={() => fileRef.current?.click()} title="Abrir un archivo .geojson en el editor">Importar GeoJSON</Button>
+        <input ref={fileRef} type="file" accept=".geojson,.json,application/geo+json,application/json" className="hidden"
+          onChange={(e) => { const f = e.target.files?.[0]; e.target.value = ''; if (f) importFile(f) }} />
+        <Button variant="blue" onClick={() => setEditing({ kind: 'new' })}>+ Nueva ruta</Button>
+      </div>
       <div className="flex flex-wrap gap-2">
         {routes.map((r) => (
           <button
@@ -164,7 +209,9 @@ export function Rutas() {
           title={route.name}
           subtitle={`${route.municipios.join(', ') || 'Sin municipio'} · ${route.stops.length} paradas · ${route.stops.filter((s) => s.accessible).length} accesibles`}
           actions={
-            <div className="flex gap-2">
+            <div className="flex flex-wrap gap-2">
+              <Button variant="blue" onClick={() => setEditing({ kind: 'edit', raw: route.raw })}>Editar trazo y paradas</Button>
+              <Button onClick={() => setEditing({ kind: 'copy', raw: route.raw })} title="Usar esta ruta como base para una nueva">Duplicar</Button>
               <Button onClick={() => setGeojson(route)}>GeoJSON</Button>
               <Button variant="red" onClick={() => del(route)}>Borrar ruta</Button>
             </div>
@@ -191,7 +238,7 @@ export function Rutas() {
           </div>
           <p className="mt-3 text-xs text-slate-400">
             Toca el estado de una parada para marcarla como accesible (rampa) o no; se publica a las apps al instante.
-            La edición del trazo se hace por GeoJSON.
+            Para cambiar el recorrido o las paradas usa «Editar trazo y paradas».
           </p>
         </Section>
       )}

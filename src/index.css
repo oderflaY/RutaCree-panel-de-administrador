@@ -180,6 +180,24 @@ body { background: var(--bg); color: var(--ink); font-synthesis-weight: none; }
 /* Sin reportar hace rato: se ve su última posición, apagada. */
 .bus-marker.stale { filter: grayscale(1); opacity: 0.55; }
 
+/* Paradas en el editor de rutas: gota con el número (o ⚑ el destino), del color de la ruta.
+   El elemento del marcador no lleva transform (MapLibre lo usa para posicionarlo): gira la gota de adentro. */
+.stop-pin { --pin: var(--dif-azul); width: 26px; height: 34px; cursor: grab; } /* MapLibre lo posiciona (absolute) */
+.stop-pin > b {
+  position: absolute; left: 0; top: 0; width: 26px; height: 26px; display: grid; place-items: center;
+  border-radius: 50% 50% 50% 4px; transform: rotate(-45deg);
+  background: var(--pin); border: 2.5px solid #fff; box-shadow: 0 2px 6px rgb(0 0 0 / .35);
+}
+.stop-pin > b > span { transform: rotate(45deg); color: #fff; font: 700 11px/1 system-ui, sans-serif; }
+.stop-pin > i {
+  position: absolute; right: -8px; top: -6px;
+  font-style: normal; font-size: 10px; line-height: 15px; width: 15px; height: 15px; text-align: center;
+  border-radius: 50%; background: #fff; box-shadow: 0 1px 3px rgb(0 0 0 / .3);
+}
+.stop-pin[data-leg='regreso'] > b { opacity: .8; border-style: dashed; }
+.stop-pin[data-sel='true'] { z-index: 3; }
+.stop-pin[data-sel='true'] > b { outline: 3px solid #111827; outline-offset: 2px; }
+
 /* Celdas que se llenan en los formatos del DIF (pantalla Formatos). */
 .form-cell {
   position: absolute;
