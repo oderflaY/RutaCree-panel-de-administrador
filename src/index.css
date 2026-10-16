@@ -43,6 +43,84 @@
   --color-rose-600: #fb7a8e;
 }
 
+/* ---- Colores DIF Durango ----
+   Paleta del logotipo DIF y de la imagen "Ruta Azul" (estilo artesanal). Cada sección del panel toma un
+   color: --accent es el color de marca (barras, iconos, rellenos) y --accent-ink el mismo tono ajustado
+   para texto (contraste AA sobre el fondo, en claro y en oscuro). Dentro de una sección, los azules
+   de Tailwind (sky-*) apuntan a su color, así botones, pestañas y KPIs se pintan solos. */
+:root {
+  --dif-magenta: #d91178;
+  --dif-vino: #ad1b71;
+  --dif-morado: #9a6cb1;
+  --dif-azul: #2f5da8;
+  --dif-turquesa: #34b8bb;
+  --dif-amarillo: #f8c817;
+  --dif-naranja: #f19025;
+  --dif-rojo: #e31e31;
+  --dif-franja: linear-gradient(90deg, var(--dif-magenta) 0 16%, var(--dif-naranja) 16% 32%, var(--dif-amarillo) 32% 48%,
+    var(--dif-turquesa) 48% 64%, var(--dif-azul) 64% 80%, var(--dif-morado) 80% 100%);
+  --accent: var(--dif-azul);
+  --accent-ink: #2a55a0;
+}
+:root[data-theme='dark'] { --accent-ink: #7fa6ee; }
+
+[data-section='monitoreo']     { --accent: var(--dif-azul);     --accent-ink: #2a55a0; }
+[data-section='formatos']      { --accent: var(--dif-magenta);  --accent-ink: #b80e66; }
+[data-section='estadisticas']  { --accent: var(--dif-morado);   --accent-ink: #7a4e96; }
+[data-section='turnos']        { --accent: var(--dif-naranja);  --accent-ink: #9c4f08; }
+[data-section='mantenimiento'] { --accent: var(--dif-turquesa); --accent-ink: #0f7477; }
+[data-section='incidencias']   { --accent: var(--dif-rojo);     --accent-ink: #bf1520; }
+[data-section='rutas']         { --accent: var(--dif-amarillo); --accent-ink: #806000; }
+[data-section='pasajeros']     { --accent: var(--dif-vino);     --accent-ink: #9c1866; }
+[data-section='cuentas']       { --accent: #6b7486;             --accent-ink: #4e5668; }
+:root[data-theme='dark'] [data-section='monitoreo']     { --accent-ink: #7fa6ee; }
+:root[data-theme='dark'] [data-section='formatos']      { --accent-ink: #f56aae; }
+:root[data-theme='dark'] [data-section='estadisticas']  { --accent-ink: #c39bdb; }
+:root[data-theme='dark'] [data-section='turnos']        { --accent-ink: #f7ae5c; }
+:root[data-theme='dark'] [data-section='mantenimiento'] { --accent-ink: #5fd3d5; }
+:root[data-theme='dark'] [data-section='incidencias']   { --accent-ink: #ff7a82; }
+:root[data-theme='dark'] [data-section='rutas']         { --accent-ink: #f8cf3e; }
+:root[data-theme='dark'] [data-section='pasajeros']     { --accent-ink: #ee6fb4; }
+:root[data-theme='dark'] [data-section='cuentas']       { --accent-ink: #aeb6c6; }
+
+[data-section] {
+  --blue: var(--accent-ink);
+  --color-sky-400: var(--accent);
+  --color-sky-500: var(--accent);
+  --color-sky-600: var(--accent-ink);
+  --color-sky-700: var(--accent-ink);
+  --color-sky-100: color-mix(in srgb, var(--accent) 16%, var(--bg));
+  --color-sky-200: color-mix(in srgb, var(--accent) 28%, var(--bg));
+}
+
+/* Franja multicolor del DIF (como el papel picado de la imagen Ruta Azul). */
+.dif-franja { height: 5px; border-radius: 999px; background: var(--dif-franja); }
+
+/* Fondo de cada sección: un velo muy suave de su color en la esquina. */
+.section-wash {
+  background:
+    radial-gradient(900px 260px at 100% 0%, color-mix(in srgb, var(--accent) 9%, transparent), transparent 70%),
+    radial-gradient(700px 220px at 0% 100%, color-mix(in srgb, var(--accent) 5%, transparent), transparent 70%);
+}
+
+/* Menú: cada opción con su color; la elegida, con barra lateral y texto en su tono. */
+.nav-item { position: relative; }
+.nav-item .nav-chip {
+  display: grid; place-items: center; width: 30px; height: 30px; border-radius: 9px;
+  color: var(--accent-ink);
+  background: color-mix(in srgb, var(--accent) 15%, var(--bg));
+}
+.nav-item[data-on='true'] { color: var(--accent-ink); }
+.nav-item[data-on='true'] .nav-chip { background: var(--accent); color: var(--chip-on, #fff); }
+/* Iconos sobre los tonos claros (naranja, turquesa, amarillo): oscuros para que se lean. */
+[data-section='turnos'] { --chip-on: #3a1d00; }
+[data-section='mantenimiento'] { --chip-on: #06393b; }
+[data-section='rutas'] { --chip-on: #3d2e00; }
+.nav-item[data-on='true']::before {
+  content: ''; position: absolute; left: -9px; top: 22%; bottom: 22%; width: 4px; border-radius: 4px; background: var(--accent);
+}
+.nav-item:hover { color: var(--accent-ink); }
+
 html, body, #root { height: 100%; margin: 0; }
 body { background: var(--bg); color: var(--ink); font-synthesis-weight: none; }
 

@@ -6,7 +6,7 @@ import type { Stats } from '../types'
 
 // Estadísticas de pasajeros: todo sale de lo que el chofer cuenta al iniciar cada vuelta (app o WhatsApp).
 // Gráficas en SVG propio (sin librerías: el CSP del servidor es estricto). Colores: ranuras categóricas
-// fijas validadas contra el fondo del panel en claro y oscuro (hombres = 1, mujeres = 2).
+// del DIF (azul y naranja: se distinguen también con daltonismo) en claro y oscuro (hombres = 1, mujeres = 2).
 
 const iso = (d: Date) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
 const daysAgo = (n: number) => { const d = new Date(); d.setDate(d.getDate() - n); return iso(d) }
@@ -174,8 +174,8 @@ function byDayOrWeek(s: Stats) {
 // ---- piezas de gráfica ----
 
 const VIZ_CSS = `
-.viz-root { --series-1:#2a78d6; --series-2:#eb6834; --grid:#cfd6e2; --viz-surface:var(--bg); }
-:root[data-theme='dark'] .viz-root { --series-1:#3987e5; --series-2:#d95926; --grid:#3a414d; }
+.viz-root { --series-1:var(--dif-azul); --series-2:#e07b12; --grid:#cfd6e2; --viz-surface:var(--bg); }
+:root[data-theme='dark'] .viz-root { --series-1:#5b8be0; --series-2:var(--dif-naranja); --grid:#3a414d; }
 .viz-hit:hover .viz-mark { filter: brightness(1.08); }
 `
 

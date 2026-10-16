@@ -46,7 +46,10 @@ export function Section({ title, subtitle, actions, children }: { title: string;
     <section className="neu-card p-5">
       <div className="mb-4 flex items-start justify-between gap-3">
         <div>
-          <h2 className="text-base font-semibold text-slate-700">{title}</h2>
+          <h2 className="flex items-center gap-2 text-base font-semibold text-slate-700">
+            <span aria-hidden className="h-4 w-1.5 rounded-full" style={{ background: 'var(--accent)' }} />
+            {title}
+          </h2>
           {subtitle && <p className="mt-0.5 text-xs text-slate-500">{subtitle}</p>}
         </div>
         {actions}
