@@ -65,7 +65,7 @@ export function Monitoreo() {
         bus,
         number: labelOf(bus),
         routeName: route?.name ?? bus.routeId,
-        color: route?.color ?? '#6c8cff',
+        color: route?.color ?? '#2f5da8',
         driver: shift ? (driverName.get(shift.driverId) ?? shift.driverId) : '',
         located,
         live: located && now - bus.updated <= STALE_MS,

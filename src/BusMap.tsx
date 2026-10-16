@@ -132,7 +132,7 @@ export function BusMap({
           m.marker.setLngLat([lerp(bus.prevLng, bus.tgtLng, f), lerp(bus.prevLat, bus.tgtLat, f)])
           const label = labelRef.current(bus)
           if (m.el.textContent !== label) m.el.textContent = label
-          m.el.style.background = colorOf.get(bus.routeId) ?? '#6c8cff'
+          m.el.style.background = colorOf.get(bus.routeId) ?? '#2f5da8'
           m.el.classList.toggle('stale', now - bus.updated > STALE_MS)
           m.el.classList.toggle('selected', selectedRef.current === bus.id)
           m.el.setAttribute('aria-label', `Unidad ${label}`)

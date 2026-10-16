@@ -21,7 +21,7 @@ type Parsed = {
 }
 
 function parse(raw: RawRoute): Parsed {
-  const r: Parsed = { id: '', name: '', color: '#8ECAE6', line: [], municipios: [], regresoDesde: null, stops: [], raw }
+  const r: Parsed = { id: '', name: '', color: '#2F5DA8', line: [], municipios: [], regresoDesde: null, stops: [], raw }
   for (const f of raw.features) {
     const p = f.properties
     if (f.geometry.type === 'LineString') {
@@ -63,7 +63,7 @@ function RoutePreview({ route }: { route: Parsed | null }) {
         type: 'geojson',
         data: { type: 'FeatureCollection', features: route.stops.map((s) => ({ type: 'Feature', properties: { a: s.accessible }, geometry: { type: 'Point', coordinates: [s.lng, s.lat] } })) },
       })
-      map.addLayer({ id: 's', type: 'circle', source: 's', paint: { 'circle-radius': 5, 'circle-color': ['case', ['get', 'a'], '#34d399', '#1b1f26'], 'circle-stroke-color': route.color, 'circle-stroke-width': 2 } })
+      map.addLayer({ id: 's', type: 'circle', source: 's', paint: { 'circle-radius': 5, 'circle-color': ['case', ['get', 'a'], '#34b8bb', '#1b1f26'], 'circle-stroke-color': route.color, 'circle-stroke-width': 2 } })
       const b = new maplibregl.LngLatBounds()
       for (const c of route.line) b.extend(c)
       map.fitBounds(b, { padding: 40, duration: 0 })

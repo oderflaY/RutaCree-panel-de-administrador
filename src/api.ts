@@ -62,7 +62,7 @@ export async function fetchRoutes(): Promise<Route[]> {
   const body = (await res.json()) as { routes: { features: Feature[] }[] }
   const out: Route[] = []
   for (const fc of body.routes ?? []) {
-    const r: Route = { id: '', name: '', color: '#8ECAE6', line: [], municipios: [], regresoDesde: null, stops: [] }
+    const r: Route = { id: '', name: '', color: '#2F5DA8', line: [], municipios: [], regresoDesde: null, stops: [] }
     for (const f of fc.features ?? []) {
       const p = f.properties ?? {}
       if (f.geometry.type === 'LineString') {
