@@ -1,0 +1,123 @@
+@import 'tailwindcss';
+@import 'maplibre-gl/dist/maplibre-gl.css';
+
+:root {
+  --bg: #e6ecf5;        /* fondo pastel */
+  --bg-sunk: #dfe6f1;   /* zonas hundidas */
+  --dark: #c5cbd5;      /* sombra */
+  --light: #ffffff;     /* luz */
+  --ink: #3b4758;       /* texto principal */
+  --ink-soft: #6b7686;  /* texto secundario */
+  --mint: #4fc3a1;
+  --blue: #6c8cff;
+}
+
+/* Tema oscuro: mismas piezas neumórficas sobre grafito. La escala slate se invierte y los tonos de
+   acento se ajustan para que las clases de Tailwind de todas las pantallas funcionen sin cambios. */
+:root[data-theme='dark'] {
+  color-scheme: dark;
+  --bg: #252a33;
+  --bg-sunk: #20242c;
+  --dark: #171a20;
+  --light: #323844;
+  --ink: #dde3ea;
+  --ink-soft: #9aa5b4;
+
+  --color-slate-200: #323843;
+  --color-slate-300: #444b57;
+  --color-slate-400: #7f8a9a;
+  --color-slate-500: #9aa5b4;
+  --color-slate-600: #c3cbd6;
+  --color-slate-700: #dde3ea;
+
+  --color-sky-100: #1b3346;
+  --color-sky-200: #1f4462;
+  --color-sky-600: #4fb8f0;
+  --color-sky-700: #7fcff7;
+  --color-emerald-100: #173a30;
+  --color-emerald-600: #3fd29e;
+  --color-emerald-700: #6ee2b6;
+  --color-amber-100: #3d3119;
+  --color-amber-700: #f5c955;
+  --color-rose-100: #42202a;
+  --color-rose-600: #fb7a8e;
+}
+
+html, body, #root { height: 100%; margin: 0; }
+body { background: var(--bg); color: var(--ink); font-synthesis-weight: none; }
+
+/* Tarjeta extruida (hacia afuera) */
+.neu-card {
+  background: var(--bg);
+  border-radius: 18px;
+  box-shadow: 8px 8px 16px var(--dark), -8px -8px 16px var(--light);
+}
+.neu-card-sm {
+  background: var(--bg);
+  border-radius: 14px;
+  box-shadow: 6px 6px 12px var(--dark), -6px -6px 12px var(--light);
+}
+/* Hundido: inputs, pozos, listas */
+.neu-inset {
+  background: var(--bg-sunk);
+  border-radius: 12px;
+  box-shadow: inset 4px 4px 8px var(--dark), inset -4px -4px 8px var(--light);
+}
+/* Botón: relieve que se hunde al presionar */
+.neu-btn {
+  background: var(--bg);
+  border-radius: 12px;
+  box-shadow: 5px 5px 10px var(--dark), -5px -5px 10px var(--light);
+  transition: box-shadow .12s ease, transform .12s ease, color .12s ease;
+}
+.neu-btn:hover { color: var(--blue); }
+.neu-btn:active, .neu-btn[data-on='true'] {
+  box-shadow: inset 4px 4px 8px var(--dark), inset -4px -4px 8px var(--light);
+  transform: translateY(1px);
+}
+.neu-btn:disabled { opacity: .5; box-shadow: 5px 5px 10px var(--dark), -5px -5px 10px var(--light); }
+
+/* Mapa: controles con el relieve del tema */
+.maplibregl-ctrl-group { border-radius: 12px !important; box-shadow: 5px 5px 10px var(--dark), -5px -5px 10px var(--light) !important; border: none !important; }
+.maplibregl-ctrl-group button { background: var(--bg) !important; }
+[data-theme='dark'] .maplibregl-ctrl-group button .maplibregl-ctrl-icon { filter: invert(1); }
+[data-theme='dark'] .maplibregl-ctrl-attrib { background: rgb(37 42 51 / .8); color: var(--ink-soft); }
+[data-theme='dark'] .maplibregl-ctrl-attrib a { color: var(--ink-soft); }
+
+/* Camión en el mapa en vivo: píldora con el número económico, del color de su ruta. */
+.bus-marker {
+  min-width: 34px;
+  padding: 3px 9px;
+  border-radius: 999px;
+  border: 2.5px solid #fff;
+  color: #fff;
+  font: 700 13px/1.2 system-ui, sans-serif;
+  text-align: center;
+  text-shadow: 0 1px 2px rgb(0 0 0 / 0.45);
+  box-shadow: 0 2px 6px rgb(0 0 0 / 0.35);
+  cursor: pointer;
+  white-space: nowrap;
+}
+.bus-marker.selected { outline: 3px solid #111827; outline-offset: 2px; z-index: 2; }
+/* Sin reportar hace rato: se ve su última posición, apagada. */
+.bus-marker.stale { filter: grayscale(1); opacity: 0.55; }
+
+/* Celdas que se llenan en los formatos del DIF (pantalla Formatos). */
+.form-cell {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  margin: 0;
+  padding: 1px 3px;
+  resize: none;
+  overflow: hidden;
+  background: transparent;
+  outline: none;
+}
+.form-cell[data-state='auto'] { background: rgb(14 165 233 / 0.10); }
+.form-cell[data-state='edited'] { background: rgb(250 204 21 / 0.35); }
+.form-cell[data-state='empty']:hover,
+.form-cell:hover { background: rgb(14 165 233 / 0.16); }
+.form-cell:focus { background: #fff; box-shadow: inset 0 0 0 2px #0ea5e9; overflow: auto; z-index: 1; }
